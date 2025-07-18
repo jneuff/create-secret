@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/jneuff/create-secret/compare/v0.1.1...v0.2.0) (2025-07-18)
+
+
+### Features
+
+* implement helm chart publish step ([f1c2f66](https://github.com/jneuff/create-secret/commit/f1c2f66b58b9ec327902f55a6dde232a785a67ee))
+
 ## [0.1.1](https://github.com/jneuff/create-secret/compare/v0.1.0...v0.1.1) (2025-07-18)
 
 
