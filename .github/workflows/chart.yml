@@ -28,7 +28,7 @@ jobs:
       !startsWith(github.event.pull_request.title, 'chore(main): release')
     needs: ["integration-test-reusable"]
     outputs:
-      release_created: ${{ steps.release-please.outputs.release_created }}
+      release_created: ${{ steps.release-please.outputs.releases_created }}
       tag_name: ${{ steps.release-please.outputs.tag_name }}
     steps:
       - id: release-please
