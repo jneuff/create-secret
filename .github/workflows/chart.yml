@@ -18,15 +18,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  integration-test-reusable:
-    uses: ./.github/workflows/integration_test_reusable.yaml
+  # integration-test-reusable:
+  #   uses: ./.github/workflows/integration_test_reusable.yaml
 
   release-please:
     runs-on: ubuntu-latest
     if: >
       github.event_name != 'pull_request' || 
       !startsWith(github.event.pull_request.title, 'chore(main): release')
-    needs: ["integration-test-reusable"]
+    # needs: ["integration-test-reusable"]
     outputs:
       release_created: ${{ steps.release-please.outputs.releases_created }}
       tag_name: ${{ steps.release-please.outputs.tag_name }}
@@ -43,11 +43,14 @@ jobs:
 
   publish-chart:
     runs-on: ubuntu-latest
-    needs: ["integration-test-reusable", "release-please"]
+    # needs: ["integration-test-reusable", "release-please"]
+    needs: ["release-please"]
     permissions:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - run: echo ${{ needs.release-please.outputs.release_created }}
+      - run: echo ${{ needs.release-please.outputs.releases_created }}
       - if: ${{ needs.release-please.outputs.release_created }} && ${{ needs.integration-test-reusable.result }} == 'success'
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -57,5 +60,5 @@ jobs:
           helm push *.tgz oci://ghcr.io/jneuff/create-secret/helm
 
   required-reusable:
-    needs: ["integration-test-reusable"]
+    # needs: ["integration-test-reusable"]
     uses: ./.github/workflows/required_reusable.yaml
